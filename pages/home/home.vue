@@ -2,7 +2,7 @@
   <view>
     <!-- 轮播图区域 -->
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular="true">
-      <swiper-item v-for="(item,index) in swiperList" :key="index">
+      <swiper-item v-for="(item,i) in swiperList" :key="i">
         <!-- navigator导航组件，配置url跳转地址 -->
         <navigator class="swiper-item" :url="'/subpkg/goods_detail/goods_detail?goods_id=' + item.goods_id">
           <image :src="item.image_src"></image>
@@ -11,7 +11,7 @@
     </swiper>
     <!-- 分类导航区域 -->
     <view class="nav-list">
-      <view class="nav-item" v-for="(item,index) in navList" :key="index" @click="navHandler(item)">
+      <view class="nav-item" v-for="(item,i) in navList" :key="i" @click="navHandler(item)">
         <image :src="item.image_src" class="nav-img"></image>
       </view>
     </view>
@@ -19,7 +19,7 @@
     <!-- 楼层容器 -->
     <view class="floor-list">
       <!-- 楼层每一个item项 -->
-      <view class="floor-item" v-for="(item,index) in floorList" :key="index">
+      <view class="floor-item" v-for="(item,i) in floorList" :key="i">
         <!-- 楼层标题 -->
         <image :src="item.floor_title.image_src" class="floor-title"></image>
         <!-- 楼层图片 -->
@@ -30,7 +30,7 @@
           </navigator>
           <!-- 右侧盒子 -->
           <view class="right-img-box">
-            <navigator class="right-img-item" v-for="(item2,index) in item.product_list" :key="index" v-if="index !== 0" :url="item2.url">
+            <navigator class="right-img-item" v-for="(item2,i) in item.product_list" :key="i" v-if="i !== 0" :url="item2.url">
               <image :src="item2.image_src" :style="{width: item2.image_width + 'rpx'}" mode="widthFix"></image>
             </navigator>
           </view>
