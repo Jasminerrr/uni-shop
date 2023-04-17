@@ -1,5 +1,8 @@
 <template>
   <view>
+    <!-- 使用自定义的搜索组件 -->
+    <!-- <my-search :bgcolor="'pink'" :radius="5"></my-search> -->
+    <my-search @click="gotoSearch"></my-search>
     <view class="scroll-container">
       <!-- 左侧滑动区 -->
       <scroll-view class="left-scroll" scroll-y="true" style="{height: wh + 'px'}">
@@ -41,8 +44,8 @@
     onLoad(){
       // 获取当前系统的信息
       const sysInfo = uni.getSystemInfoSync()
-      // 将窗口可用高度赋值给wh
-      this.wh = sysInfo.windowHeight
+      // 将窗口可用高度赋值给wh，还要减去搜索区域50的高度
+      this.wh = sysInfo.windowHeight -50
       // 获取分类列表数据
       this.getCateList()
     },
@@ -55,6 +58,7 @@
         // 让二级分类赋值给默认索引为0的这一项
         this.cateLever2 = res.message[0].children
       },
+      
       // 点击高亮改变(一级分类)时
       activeChanged(i){
         // 让高亮为当前索引
@@ -64,12 +68,23 @@
         // 切换一级分类时,让滚动条距顶部距离为1(不能重复赋值为0)
         this.scrollTop = this.scrollTop === 0 ? 1 : 0
       },
+      
       // 点击三级分类去往商品列表页
       gotoGoodsList(item3){
         uni.navigateTo({
           url:'/subpkg/goods_list/goods_list?cid=' + item3.cat_id 
         })
-      }
+      },
+      
+      // 点击顶部搜索事件
+      gotoSearch(){
+        // 导航到分包搜索页面
+        uni.navigateTo({
+          url:'/subpkg/search/search'
+        })
+      },
+      
+      
     }
   }
 </script>

@@ -1,5 +1,9 @@
 <template>
   <view>
+    <!-- 顶部搜索区域 -->
+    <view class="search-box">
+      <my-search @click="gotoSearch"></my-search>
+    </view>
     <!-- 轮播图区域 -->
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular="true">
       <swiper-item v-for="(item,i) in swiperList" :key="i">
@@ -101,11 +105,20 @@
         // 请求成功赋值数据
         this.floorList = res.message
       },
+      
+      // 点击顶部搜索事件
+      gotoSearch(){
+        // 导航到分包搜索页面
+        uni.navigateTo({
+          url:'/subpkg/search/search'
+        })
+      },
     }
   }
 </script>
 
 <style lang="scss">
+  // 轮播图
   swiper {
     height: 330rpx;
 
@@ -115,6 +128,7 @@
       height: 100%;
     }
   }
+  // 楼层图
   .nav-list{
     display: flex;
     justify-content: space-around;
@@ -136,6 +150,15 @@
   .floor-img-box{
     display: flex;
     padding-left: 10rpx;
+  }
+  
+  // 顶部搜索
+  .search-box{
+    // 设置定位效果为“吸顶”
+    position: sticky;
+    // 吸顶的位置
+    top: 0;
+    z-index: 999;
   }
   
 </style>
