@@ -48,7 +48,7 @@
       this.wh = sysInfo.windowHeight -50
       // 获取分类列表数据
       this.getCateList()
-    },
+    }, 
     methods:{
       // 获取分类列表数据
       async getCateList(){

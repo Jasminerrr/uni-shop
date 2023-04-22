@@ -33,6 +33,8 @@
       this.queryObj.cid = options.cid || ''
       // 调用获取商品列表的方法
       this.getGoodsList()
+      
+      
     },
     
     methods:{
@@ -58,9 +60,13 @@
         uni.navigateTo({
           url:'/subpkg/goods_detail/goods_detail?goods_id=' + item.goods_id
         })
-      }
+      },
+      
+      
+      
       
     },
+    
     // onReachBottom函数，用来监听页面的上拉触底行为
     onReachBottom(){
       // 判断是否还有下一页数据，没有就返回 并调用展示信息
@@ -83,6 +89,8 @@
       // 重新发请求,获取数据，并停止下拉刷新函数传给获取列表的事件
       this.getGoodsList(()=> uni.stopPullDownRefresh())
     },
+    
+    
   }
 </script>
 
