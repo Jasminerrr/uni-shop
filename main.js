@@ -3,6 +3,9 @@ import App from './App'
 // #ifndef VUE3
 import Vue from 'vue'
 
+// 导入store实例对象
+import store from '@/store/store.js'
+
 // 导入网络请求的包
 import {
   $http
@@ -69,7 +72,9 @@ try {
 } catch (error) {}
 
 const app = new Vue({
-  ...App
+  ...App,
+  // 将 store 挂载到 Vue 实例上
+  store
 })
 app.$mount()
 // #endif

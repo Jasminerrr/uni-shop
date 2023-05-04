@@ -38,19 +38,24 @@
 </template>
 
 <script>
+  // 按需导入 mapMutations 这个辅助方法
+  import { mapState,mapMutations,mapGetters } from 'vuex'
   export default {
     data() {
       return {
         goods_info:{}, // 商品详情对象
         // 左侧按钮组的配置对象
-        options: [{
+        options: [
+          {
           icon: 'shop',
           text: '店铺'
-        }, {
+          },
+          {
           icon: 'cart',
           text: '购物车',
-          info: 2 // 右上角数字图标
-        }],
+          info: 0 // 右上角数字图标
+          },
+        ],
         // 右侧按钮组的配置对象
         buttonGroup: [
           {
@@ -73,9 +78,14 @@
       const goods_id = options.goods_id
       // 获取商品详情
       this.getGoodsDetail(goods_id)
+      
     },
     
     methods:{
+      // 把 m_cart 模块中的 addToCart 方法映射到当前页面使用
+      // ...mapMutations('模块的名称', ['要映射的数据名称1', '要映射的数据名称2'])
+      ...mapMutations('m_cart',['addToCart']),
+
       // 获取商品详情
       async getGoodsDetail(goods_id){
         const {data:res} = await uni.$http.get('/api/public/v1/goods/detail',{ goods_id })
@@ -107,7 +117,54 @@
           })
         }
       },
+      
+      // 右侧按钮的点击事件处理函数
+      buttonClick(e){
+        // console.log(e);
+        // 1. 判断是否点击了 加入购物车 按钮
+        if(e.content.text === '加入购物车'){
+          // 2.定义一个商品对象goods，并整理商品的信息
+          const goods = {
+            goods_id :this.goods_info.goods_id,
+            goods_name :this.goods_info.goods_name,
+            goods_price :this.goods_info.goods_price,
+            goods_count:1, // 商品数量，默认为1
+            goods_small_logo :this.goods_info.goods_small_logo,
+            goods_state :true, // 商品的勾选状态
+          }
+          // 3. 调用vuex中映射的加入购物车方法，将商品对象传过去
+          this.addToCart(goods)
+        }
+      },
+      
+      
     },
+    
+    // 计算属性
+    computed:{
+      ...mapState('m_cart',['cart']),
+      ...mapGetters('m_cart',['total']),
+    },
+    
+    // 监听器
+    watch: {
+      //  定义 total 侦听器，指向一个配置对象
+      total:{
+        // 1. handler 属性用来定义侦听器的 function 处理函数,通过第一个形参得到变化后的新值
+        handler(newValue) {
+          // 2. 通过数组的 find() 方法，找到购物车按钮的配置对象，并返回当前这项
+          const findResult = this.options.find( item => item.text === '购物车')
+          // 3. 如果有的话,则将新值赋值给info（findResult为当前购物车的配置对象）
+          if(findResult){
+            findResult.info = newValue
+          }
+        },
+        // immediate 属性用来声明此侦听器，是否在页面初次加载完毕后立即调用
+        immediate:true
+      },
+    },
+    
+    
   }
 </script>
 
