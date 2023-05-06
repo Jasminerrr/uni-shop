@@ -120,7 +120,7 @@
       
       // 右侧按钮的点击事件处理函数
       buttonClick(e){
-        // console.log(e);
+        console.log(e);
         // 1. 判断是否点击了 加入购物车 按钮
         if(e.content.text === '加入购物车'){
           // 2.定义一个商品对象goods，并整理商品的信息

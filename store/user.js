@@ -4,7 +4,12 @@ export default {
   state:() => ({
     // 3. 读取本地的收货地址数据，初始化 address 对象
     address:JSON.parse(uni.getStorageSync('address')||'{}'),
+    token:uni.getStorageSync('token')||'',
+    userinfo:JSON.parse(uni.getStorageSync('userinfo')||'{}'),
+    // 重定向的 object 对象 { openType, from }
+    redirectInfo:null
   }),
+  
   mutations:{
     // 更新收货地址,第一个参数永远是state,第二个参数是外界传的
     updateAddress(state,address){
@@ -17,7 +22,36 @@ export default {
     saveAddressToStorage(state){
       uni.setStorageSync('address',JSON.stringify(state.address))
     },
+    
+    // 更新用户的基本信息，存储到 vuex 
+    updateUserInfo(state,userinfo){
+      state.userinfo = userinfo
+      this.commit('m_user/saveUserInfoToStorage')
+    },
+    
+    // 持久化存储用户信息
+    saveUserInfoToStorage(state){
+      uni.setStorageSync('userinfo',JSON.stringify(state.userinfo))
+    },
+   
+   // 更新token字符串，存储到 vuex 
+   updateToken(state,token){
+     state.token = token
+     this.commit('m_user/saveTokenToStorage')
+   },
+   
+   // 持久化存储token
+   saveTokenToStorage(state){
+     uni.setStorageSync('token', state.token)
+   }, 
+    
+    // 更新重定向对象，将对象信息存储到 vuex 
+    updateRedirectInfo(state,info){
+      state.redirectInfo = info
+    },
   },
+  
+  
   getters:{
     // 收货详细地址的计算属性
     addstr(state){

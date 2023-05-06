@@ -15,13 +15,23 @@ uni.$http = $http
 
 // 配置请求的根路径
 $http.baseUrl = 'https://www.uinav.com'
+// $http.baseUrl = 'https://www.esinsis.tech'
 
-// 挂载请求拦截器
+// 挂载请求拦截器,options包含请求相关的信息
 $http.beforeRequest = function(options) {
   // 展示loading效果
   uni.showLoading({
     title: '数据加载中',
   })
+  // 在请求头中添加 Token 身份认证的字段：只有在登录之后才允许调用支付相关的接口
+  // 判断请求的是否为有权限的 API 接口
+  if(options.url.indexOf('/my/') !== -1){
+    // 为请求头添加身份认证字段
+    options.header = {
+      // 字段的值可以直接从 vuex 中进行获取
+      Authorization:store.state.m_user.token,
+    }
+  }
 }
 
 // 相应拦截器
